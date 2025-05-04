@@ -1,15 +1,23 @@
 const express = require("express");
 const { connectDB } = require("./config/database.js");
+const User = require("./models/user.js");
 const app = express();
 app.use(express.json());
 const PORT = 3000;
 
-app.post("/user", (req, res) => {
-  const { firstName, lastName } = req.body;
+app.post("/user", async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
 
-  res
-    .status(200)
-    .send("FirstName: " + " " + firstName + " " + "lastName" + " " + lastName);
+  const user = new User({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
+
+  await user.save();
+
+  res.status(201).send("User Created SuccessFully");
 });
 
 app.get("/");
