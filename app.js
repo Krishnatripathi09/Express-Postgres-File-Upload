@@ -20,7 +20,11 @@ app.post("/user", async (req, res) => {
   res.status(201).send("User Created SuccessFully");
 });
 
-app.get("/");
+app.get("/user", async (req, res) => {
+  const user = await User.findOne({});
+
+  res.status(200).send(user);
+});
 
 connectDB()
   .then(() => {
