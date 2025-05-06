@@ -21,7 +21,8 @@ app.post("/user", async (req, res) => {
 });
 
 app.get("/user", async (req, res) => {
-  const user = await User.findOne({});
+  const email = req.body.email;
+  const user = await User.findOne({ email: email });
 
   res.status(200).send(user);
 });
