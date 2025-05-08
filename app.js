@@ -1,6 +1,7 @@
 const express = require("express");
 const { connectDB } = require("./config/database.js");
 const User = require("./models/user.js");
+const bcrypt = require("bcrypt");
 const app = express();
 app.use(express.json());
 const PORT = 3000;
@@ -8,11 +9,13 @@ const PORT = 3000;
 app.post("/user", async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
+  const passwordHash = await bcrypt.hash(password, 10);
+
   const user = new User({
     firstName,
     lastName,
     email,
-    password,
+    password: passwordHash,
   });
 
   await user.save();
