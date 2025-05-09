@@ -37,7 +37,11 @@ app.delete("/user", async (req, res) => {
 
   res.status(200).send("User Deleted Successfully");
 });
+app.post("/signup", async (req, res) => {
+  const { email, password } = req.body;
 
+  const user = await User.findOne({});
+});
 connectDB()
   .then(() => {
     console.log("Connected To DataBase SuccessFully");
