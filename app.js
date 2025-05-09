@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 const PORT = 3000;
 
-app.post("/user", async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -37,10 +37,24 @@ app.delete("/user", async (req, res) => {
 
   res.status(200).send("User Deleted Successfully");
 });
-app.post("/signup", async (req, res) => {
+app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({});
+  if (!email || !password) {
+    res.status(400).send("Please Enter Valid email and Password");
+  }
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.status(400).send("Please Enter Valid Email");
+  }
+
+  const validPassword = await bcrypt.compare(password, user.password);
+  if (validPassword) {
+    res.status(200).send("Logged-In SuccessFully");
+  } else {
+    return res.status(400).send("Please Enter Valid Password");
+  }
 });
 connectDB()
   .then(() => {
