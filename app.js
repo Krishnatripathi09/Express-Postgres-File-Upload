@@ -54,7 +54,9 @@ app.post("/signin", async (req, res) => {
 
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
-    const token = jwt.sign({ id: user.id }, "MySecretKey619");
+    const id = user.id;
+    console.log(id);
+    const token = jwt.sign({ id: id }, "MySecretKey619");
     res.cookie("token", token);
     res.status(200).send("Logged-In SuccessFully");
   } else {
@@ -62,12 +64,15 @@ app.post("/signin", async (req, res) => {
   }
 });
 
-app.get("/user", (req, res) => {
+app.get("/user", async (req, res) => {
   const cookie = req.cookies;
 
   const { token } = cookie;
+  const decoded = jwt.verify(token, "MySecretKey619");
+  const { id } = decoded;
 
-  res.status(200).send(token);
+  const user = await User.findById(id).select("firstName lastName email");
+  res.status(200).send("Success" + user);
 });
 
 connectDB()
