@@ -3,6 +3,7 @@ const { connectDB } = require("./config/database.js");
 const User = require("./models/user.js");
 const bcrypt = require("bcrypt");
 const cookieparser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 const app = express();
 app.use(cookieparser());
 app.use(express.json());
@@ -53,7 +54,7 @@ app.post("/signin", async (req, res) => {
 
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
-    const token = "fghjuy545678jhge345678uhgfdcvbnkiuytrewazxcnmj876543";
+    const token = jwt.sign({ id: user.id }, "MySecretKey619");
     res.cookie("token", token);
     res.status(200).send("Logged-In SuccessFully");
   } else {
