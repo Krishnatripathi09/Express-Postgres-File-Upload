@@ -55,10 +55,7 @@ app.post("/signin", async (req, res) => {
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
     const id = user.id;
-    const token = jwt.sign({ id: id }, "MySecretKey619", {
-      expiresIn: "24h",
-      httpOnly: true,
-    });
+    const token = await user.getJWT();
     res.cookie("token", token, {
       expires: new Date(Date.now() + 24 * 360000),
       httpOnly: true,
