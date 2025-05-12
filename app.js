@@ -52,7 +52,7 @@ app.post("/signin", async (req, res) => {
     return res.status(400).send("Please Enter Valid Email");
   }
 
-  const validPassword = await bcrypt.compare(password, user.password);
+  const validPassword = await user.verifyPWD(password);
   if (validPassword) {
     const id = user.id;
     const token = await user.getJWT();
