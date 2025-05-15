@@ -4,27 +4,13 @@ const User = require("./models/user.js");
 const bcrypt = require("bcrypt");
 const cookieparser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const authRouter = require("./routes/auth.js");
 const app = express();
 app.use(cookieparser());
 app.use(express.json());
 const PORT = 3000;
 
-app.post("/signup", async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const user = new User({
-    firstName,
-    lastName,
-    email,
-    password: passwordHash,
-  });
-
-  await user.save();
-
-  res.status(201).send("User Created SuccessFully");
-});
+app.use("/", authRouter);
 
 // app.get("/user", async (req, res) => {
 //   const email = req.body.email;
