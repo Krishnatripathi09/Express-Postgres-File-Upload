@@ -20,4 +20,8 @@ authRouter.post("/signup", async (req, res) => {
   res.status(201).send("Sign-Up SuccessFul Please Log-In");
 });
 
+authRouter.post("/signin", (req, res) => {
+  const { email, password } = req.body;
+});
+
 module.exports = authRouter;
