@@ -20,8 +20,20 @@ authRouter.post("/signup", async (req, res) => {
   res.status(201).send("Sign-Up SuccessFul Please Log-In");
 });
 
-authRouter.post("/signin", (req, res) => {
+authRouter.post("/signin", async (req, res) => {
   const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) {
+    res.status(400).send("Please Enter Valid Credentials");
+  }
+
+  const validPWD = await bcrypt.compare(password, user.password);
+
+  if (validPWD) {
+    res.status(200).send("Logged-In SuccessFully");
+  } else {
+    res.status(400).send("Please Enter Valid Credentials");
+  }
 });
 
 module.exports = authRouter;
