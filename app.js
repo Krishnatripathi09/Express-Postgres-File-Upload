@@ -5,12 +5,14 @@ const bcrypt = require("bcrypt");
 const cookieparser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const authRouter = require("./routes/auth.js");
+const { profileRouter } = require("./routes/profile.js");
 const app = express();
 app.use(cookieparser());
 app.use(express.json());
 const PORT = 3000;
 
 app.use("/", authRouter);
+app.use("/", profileRouter);
 
 // app.get("/user", async (req, res) => {
 //   const email = req.body.email;
@@ -26,7 +28,6 @@ app.use("/", authRouter);
 
 //   res.status(200).send("User Deleted Successfully");
 // });
-
 
 connectDB()
   .then(() => {
