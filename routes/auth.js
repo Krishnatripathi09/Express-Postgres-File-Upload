@@ -35,7 +35,7 @@ authRouter.post("/signin", async (req, res) => {
     res.cookie("token", token);
     res.status(200).send("Logged-In SuccessFully");
   } else {
-    res.status(400).send("Please Enter Valid Credentials--> Password");
+    res.status(400).send("Please Enter Valid Credentials --> Password");
   }
 });
 

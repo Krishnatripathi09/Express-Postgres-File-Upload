@@ -3,7 +3,7 @@ const User = require("../models/user.js");
 const profileRouter = express.Router();
 
 profileRouter.get("/users", async (req, res) => {
-  const { email, password } = req.body;
+  const { email } = req.body;
   const user = await User.findOne({ email }).select("firstName lastName email");
 
   if (!user) {
