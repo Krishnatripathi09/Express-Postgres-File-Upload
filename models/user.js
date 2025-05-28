@@ -31,10 +31,11 @@ const userSchema = mongoose.Schema(
   }
 );
 
-userSchema.methods.verifyPWD = async function (password) {
+userSchema.methods.verifyPWD = async function (passwordInPutByUser) {
   const user = this;
-
-  const validPWD = await bcrypt.compare(password, user.password);
+  const passwordHash = user.password;
+  console.log(passwordHash);
+  const validPWD = await bcrypt.compare(passwordInPutByUser, passwordHash);
 
   return validPWD;
 };
@@ -47,5 +48,8 @@ userSchema.methods.getJWT = async function () {
 
   return token;
 };
+const User = mongoose.model("User", userSchema);
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = {
+  User,
+};

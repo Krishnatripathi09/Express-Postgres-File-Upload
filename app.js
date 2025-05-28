@@ -14,21 +14,6 @@ const PORT = 3000;
 app.use("/", authRouter);
 app.use("/", profileRouter);
 
-// app.get("/user", async (req, res) => {
-//   const email = req.body.email;
-//   const user = await User.findOne({ email: email });
-
-//   res.status(200).send(user);
-// });
-
-// app.delete("/user", async (req, res) => {
-//   const userEmail = req.body.email;
-
-//   const deletedUser = await User.findOneAndDelete({ email: userEmail });
-
-//   res.status(200).send("User Deleted Successfully");
-// });
-
 connectDB()
   .then(() => {
     console.log("Connected To DataBase SuccessFully");
