@@ -6,13 +6,21 @@ const cookieparser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const authRouter = require("./routes/auth.js");
 const { profileRouter } = require("./routes/profile.js");
+const { ratelimit } = require("express-rate-limit");
 const app = express();
 app.use(cookieparser());
 app.use(express.json());
 const PORT = 3000;
 
-app.use("/", authRouter);
-app.use("/", profileRouter);
+const apiLimit = ratelimit({
+  windowMs: 15 * 60 * 60,
+  limit: 10,
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+});
+
+app.use("/", apiLimit, authRouter);
+app.use("/", apiLimit, profileRouter);
 
 connectDB()
   .then(() => {
